@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 
 export default function App() {
   return (
@@ -41,6 +41,26 @@ const Header = styled.div`
   font-size: 3em;
 `;
 
+const rotate = keyframes`
+from {
+  transform: rotate(0deg);
+}
+
+to {
+  transform: rotate(360deg);
+}
+`;
+
+const antiRotate = keyframes`
+from {
+  transform: rotate(360deg);
+}
+
+to {
+  transform: rotate(0deg);
+}
+`;
+
 const Body = styled.div`
   height: 100vh;
 `;
@@ -56,6 +76,13 @@ const Button = styled.button`
 
   :active {
     background-color: ${(props) => (props.github ? '#9a4747' : '#357b35')};
+  }
+
+  animation: ${rotate} 10s linear infinite;
+  animation-play-state: paused;
+
+  :hover {
+    animation-play-state: running;
   }
   color: black;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
