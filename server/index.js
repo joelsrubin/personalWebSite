@@ -1,20 +1,19 @@
 require('dotenv').config()
 const express = require('express');
 const app = express();
-const fs = require('fs')
+const PORT = process.env.PORT;
+const fs = require('fs');
 const https = require('https')
-const PORT = process.env.PORT
-
-var privateKey = fs.readFileSync('./assets/generated-private-key.txt')
-var certificate = fs.readFileSync('./assets/generated-csr.txt')
-
-var options = {
-  key: privateKey,
-  cert: certificate
-}
 
 app.use(express.static('dist'))
 
-https.createServer(options, app).listen(PORT, () => {
-  console.log(`server listening on port ${PORT}`
+var ssl = {
+  key: fs.readFileSync("server/assets/server.key", 'utf8'),
+  cert: fs.readFileSync("server/assets/e8f50324691bf90.crt", 'utf8'),
+  ca: fs.readFileSync('server/assets/gd_bundle-g2-g1.crt', 'utf8'),
+};
+server = require('https').createServer(ssl, app);
+
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`)
 })
