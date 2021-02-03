@@ -135,6 +135,7 @@ const Button = styled.button`
   animation-play-state: paused;
 
   :hover {
+    cursor: move;
     animation-play-state: running;
   }
   color: black;
@@ -163,6 +164,7 @@ const Button2 = styled.button`
   animation-play-state: paused;
 
   :hover {
+    cursor: move;
     animation-play-state: running;
   }
   color: black;
