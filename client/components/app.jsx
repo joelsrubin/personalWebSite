@@ -114,6 +114,7 @@ const LinkedIn = styled.button`
   background-color: ${({ theme }) => theme.button2};
   cursor: pointer;
   animation: ${rotate} 10s linear infinite;
+  transition: all 0.2s linear;
   animation-play-state: paused;
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
@@ -148,7 +149,7 @@ const GitHub = styled.button`
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-
+  transition: all 0.2s linear;
   :active {
     background-color: ${({ theme }) => theme.button1Active};
   }
