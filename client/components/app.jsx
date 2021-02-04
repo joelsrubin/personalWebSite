@@ -20,7 +20,7 @@ export default function App() {
       end = new Date();
       delta = (end - start) / 1000.0;
     });
-    if (delta > 0.5) {
+    if (delta > 0.2) {
       e.preventDefault();
     }
   };
@@ -33,10 +33,15 @@ export default function App() {
       end2 = new Date();
       delta2 = (end2 - start2) / 1000.0;
     });
-    if (delta2 > 0.5) {
+    if (delta2 > 0.2) {
       e.preventDefault();
     }
   };
+
+  // const handleStop = (e) => {
+  //   form = document.getElementById
+  //   e.preventDefault();
+  // };
   return (
     <>
       <GlobalStyle />
@@ -112,14 +117,16 @@ to {
 
 const Body = styled.div`
   height: 100vh;
+  width: 50%;
 `;
 
 const Button = styled.button`
   border-radius: 30px;
-  height: 100px;
-  width: 100px;
+  height: 400px;
+  width: 400px;
   position: absolute;
   z-index: 9;
+  box-shadow: 10px 5px 5px black;
   /* border: none; */
   outline: none;
   background-color: ${(props) =>
@@ -141,14 +148,17 @@ const Button = styled.button`
   color: black;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-size: 30px;
 `;
 
 const Button2 = styled.button`
   border-radius: 30px;
-  height: 100px;
-  width: 100px;
+  font-size: 30px;
+  height: 400px;
+  width: 400px;
   position: absolute;
   z-index: 9;
+  box-shadow: 10px 5px 5px black;
 
   /* border: none; */
   outline: none;
@@ -172,30 +182,10 @@ const Button2 = styled.button`
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 `;
 
-const Button3 = styled.button`
-  width: 300px;
-  height: 100px;
-  border-radius: 30px;
-  background-color: #d5da9d;
-  font-size: 2em;
-  color: black;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  outline: none;
-`;
-
 const ButtonContainer = styled.div`
-  width: 50%;
+  width: 100%
   margin: auto;
   margin-top: 20vh;
   display: flex;
-  justify-content: space-evenly;
-`;
-
-const Container2 = styled.div`
-  width: 50%;
-
-  margin-top: 100px
-  display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `;
