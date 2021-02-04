@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
+import styled, { ThemeProvider, keyframes } from 'styled-components';
+import { GlobalStyles } from './globalStyles.js';
+import { lightTheme, darkTheme } from './Themes.js';
 
 export default function App() {
-  let start,
-    end,
-    delta = 0.6;
+  const [theme, setTheme] = useState('light');
+  const themeToggler = () => {
+    theme === 'light' ? setTheme('dark') : setTheme('light');
+  };
+
   let start2,
     end2,
     delta2 = 0.6;
 
-  const measureClick = (e) => {
-    let button = document.getElementById('button1');
-    button.addEventListener('mousedown', () => {
-      start = new Date();
-    });
-    button.addEventListener('mouseup', () => {
-      end = new Date();
-      delta = (end - start) / 1000.0;
-    });
-    if (delta > 0.2) {
-      e.preventDefault();
-    }
-  };
   const measureClick2 = (e) => {
-    let button2 = document.getElementById('button2');
+    let button2 = document.getElementById(e.target.id);
     button2.addEventListener('mousedown', () => {
       start2 = new Date();
     });
@@ -38,68 +29,60 @@ export default function App() {
     }
   };
 
-  // const handleStop = (e) => {
-  //   form = document.getElementById
-  //   e.preventDefault();
-  // };
   return (
-    <>
-      <GlobalStyle />
-      <Header>
-        <h1>Joel Rubin</h1>
-      </Header>
-      <Body>
-        <ButtonContainer>
-          <Draggable>
-            <form
-              id='button1'
-              onSubmit={measureClick}
-              target='_blank'
-              action='https://github.com/joelsrubin'
-            >
-              <Button2 id='mydiv' github>
-                Github
-              </Button2>
-            </form>
-          </Draggable>
-          <Draggable>
-            <form
-              id='button2'
-              target='_blank'
-              action='https://www.linkedin.com/in/joel-rubin-0529'
-              onSubmit={measureClick2}
-            >
-              <Button id='link'>LinkedIn</Button>
-            </form>
-          </Draggable>
-        </ButtonContainer>
-      </Body>
-    </>
+    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+      <>
+        <GlobalStyles />
+        <label className='switch'>
+          <input onClick={themeToggler} type='checkbox' />
+          <span className='slider round'></span>
+        </label>
+        <Header>
+          <h1>Joel Rubin</h1>
+        </Header>
+
+        <Body>
+          <ButtonContainer>
+            <Draggable>
+              <form
+                id='button1'
+                onSubmit={measureClick2}
+                target='_blank'
+                action='https://github.com/joelsrubin'
+              >
+                <GitHub>Github</GitHub>
+              </form>
+            </Draggable>
+            <Draggable>
+              <form
+                id='button2'
+                target='_blank'
+                action='https://www.linkedin.com/in/joel-rubin-0529'
+                onSubmit={measureClick2}
+              >
+                <LinkedIn>LinkedIn</LinkedIn>
+              </form>
+            </Draggable>
+          </ButtonContainer>
+        </Body>
+      </>
+    </ThemeProvider>
   );
 }
-
-const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  body {
-    background-color: cornflowerblue;
-    color: #c6d4df;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    position: relative;
-  }
-`;
 
 const Header = styled.div`
   text-align: center;
   font-size: 3em;
+
+  @media only screen and (max-device-width: 480px) {
+    font-size: 5em;
+  }
 `;
 
 const rotate = keyframes`
 from {
   transform: rotate(0deg);
 }
-
 to {
   transform: rotate(360deg);
 }
@@ -116,76 +99,86 @@ to {
 `;
 
 const Body = styled.div`
-  height: 100vh;
-  width: 50%;
+  /* height: 100vh; */
 `;
 
-const Button = styled.button`
+const LinkedIn = styled.button`
   border-radius: 30px;
   height: 400px;
   width: 400px;
   position: absolute;
   z-index: 9;
-  box-shadow: 10px 5px 5px black;
-  /* border: none; */
+  box-shadow: 10px 5px 5px ${({ theme }) => theme.shadow};
   outline: none;
-  background-color: ${(props) =>
-    props.github ? 'rgb(172 114 111)' : 'rgb(107 165 75)'};
+  border: none;
+  background-color: ${({ theme }) => theme.button2};
   cursor: pointer;
+  animation: ${rotate} 10s linear infinite;
+  animation-play-state: paused;
+  color: ${({ theme }) => theme.buttonText};
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-size: 30px;
 
   :active {
-    background-color: ${(props) => (props.github ? '#9a4747' : '#357b35')};
+    background-color: ${({ theme }) => theme.button2Active};
     animation-play-state: paused;
   }
 
-  animation: ${rotate} 10s linear infinite;
-  animation-play-state: paused;
-
   :hover {
     cursor: move;
     animation-play-state: running;
   }
-  color: black;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  font-size: 30px;
 `;
 
-const Button2 = styled.button`
+const GitHub = styled.button`
   border-radius: 30px;
   font-size: 30px;
   height: 400px;
   width: 400px;
   position: absolute;
   z-index: 9;
-  box-shadow: 10px 5px 5px black;
-
-  /* border: none; */
+  border: none;
+  box-shadow: 10px 5px 5px ${({ theme }) => theme.shadow};
   outline: none;
-  background-color: ${(props) =>
-    props.github ? 'rgb(172 114 111)' : 'rgb(107 165 75)'};
+  background-color: ${({ theme }) => theme.button1};
   cursor: pointer;
-
-  :active {
-    background-color: ${(props) => (props.github ? '#9a4747' : '#357b35')};
-  }
-
   animation: ${antiRotate} 10s linear infinite;
   animation-play-state: paused;
+  color: ${({ theme }) => theme.buttonText};
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+
+  :active {
+    background-color: ${({ theme }) => theme.button1Active};
+  }
 
   :hover {
     cursor: move;
     animation-play-state: running;
   }
-  color: black;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 `;
 
 const ButtonContainer = styled.div`
-  width: 100%
-  margin: auto;
   margin-top: 20vh;
+  width: 50%;
   display: flex;
   justify-content: space-between;
+  @media only screen and (max-device-width: 480px) {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-around;
+  }
+`;
+
+const Toggle = styled.button`
+  background: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.text};
+  border-radius: 30px;
+  cursor: pointer;
+  font-size:0.8rem;
+  padding: 0.6rem;
+  outline: none;
+  }
 `;
