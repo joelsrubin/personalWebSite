@@ -6,10 +6,10 @@ import styled, { createGlobalStyle, keyframes } from 'styled-components';
 export default function App() {
   let start,
     end,
-    delta = 0.11;
+    delta = 0.6;
   let start2,
     end2,
-    delta2 = 0.11;
+    delta2 = 0.6;
 
   const measureClick = (e) => {
     let button = document.getElementById('button1');
@@ -20,7 +20,7 @@ export default function App() {
       end = new Date();
       delta = (end - start) / 1000.0;
     });
-    if (delta > 0.1) {
+    if (delta > 0.5) {
       e.preventDefault();
     }
   };
@@ -33,7 +33,7 @@ export default function App() {
       end2 = new Date();
       delta2 = (end2 - start2) / 1000.0;
     });
-    if (delta2 > 0.1) {
+    if (delta2 > 0.5) {
       e.preventDefault();
     }
   };
