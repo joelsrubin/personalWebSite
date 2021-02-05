@@ -1,5 +1,13 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, keyframes } from 'styled-components'
+const fade = keyframes`
+from {
+  opacity: 1;
+}
 
+to {
+  opacity: 0;
+}
+`
 export const GlobalStyles = createGlobalStyle`
 body{
   background: ${({ theme }) => theme.body};
@@ -9,12 +17,17 @@ body{
     transition: all 0.50s linear;
 
     overflow-x: hidden;
+    overflow-y: hidden;
     /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  @media only screen and (max-device-width: 480px) {
+    width: 120px;
+    height: 68px;
+  }
 }
 
 /* Hide default HTML checkbox */
@@ -40,6 +53,10 @@ body{
   content: "";
   height: 26px;
   width: 26px;
+  @media only screen and (max-device-width: 480px) {
+    width: 52px;
+    height: 52px;
+  }
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -56,6 +73,11 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
+  @media only screen and (max-device-width: 480px) {
+    -webkit-transform: translateX(52px);
+  -ms-transform: translateX(52px);
+  transform: translateX(52px);
+  }
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -69,5 +91,13 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.hidden {
+  visibility: hidden;
+}
+
+.display {
+  visibility: visible;
+  animation: ${fade} 1s linear forwards;
 }
 `

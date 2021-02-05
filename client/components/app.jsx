@@ -7,6 +7,7 @@ import { lightTheme, darkTheme } from './Themes.js';
 
 export default function App() {
   const [theme, setTheme] = useState('light');
+  const [clicked, setClicked] = useState(false);
   const themeToggler = () => {
     theme === 'light' ? setTheme('dark') : setTheme('light');
   };
@@ -29,6 +30,24 @@ export default function App() {
     }
   };
 
+  const copyHandler = (e) => {
+    let copyText = document.getElementById('email');
+    let data = [
+      new ClipboardItem({
+        'text/plain': new Blob([copyText.innerText], { type: 'text/plain' }),
+      }),
+    ];
+    navigator.clipboard.write(data).then(
+      () => {
+        setClicked(!clicked);
+        console.log(`copied ${copyText.innerText} to clipBoard`);
+      },
+      () => {
+        console.log('failed');
+      }
+    );
+  };
+
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <>
@@ -39,6 +58,16 @@ export default function App() {
         </label>
         <Header>
           <h1>Joel Rubin</h1>
+          <MainText>
+            Hey there please reach out:{' '}
+            <span onClick={copyHandler} id='email'>
+              joelsrubin@gmail.com
+            </span>
+            <br></br>
+            <h4 className={clicked ? 'display' : 'hidden'}>
+              copied to clipboard!
+            </h4>
+          </MainText>
         </Header>
 
         <Body>
@@ -53,6 +82,7 @@ export default function App() {
                 <GitHub>Github</GitHub>
               </form>
             </Draggable>
+
             <Draggable>
               <form
                 id='button2'
@@ -76,6 +106,17 @@ const Header = styled.div`
 
   @media only screen and (max-device-width: 480px) {
     font-size: 5em;
+  }
+`;
+
+const MainText = styled.h2`
+  text-align: center;
+  font-size: 1em;
+  color: ${({ theme }) => theme.invisibleInk};
+  span {
+    color: ${({ theme }) => theme.invisibleInk};
+    text-decoration: underline;
+    cursor: pointer;
   }
 `;
 
