@@ -50,8 +50,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-      <>
-        <GlobalStyles />
+      <GlobalStyles />
+      <Body>
         <label className='switch'>
           <input onClick={themeToggler} type='checkbox' />
           <span className='slider round'></span>
@@ -64,38 +64,34 @@ export default function App() {
               joelsrubin@gmail.com
             </span>
             <br></br>
-            <h4 className={clicked ? 'display' : 'hidden'}>
+            <span className={clicked ? 'display' : 'hidden'}>
               copied to clipboard!
-            </h4>
+            </span>
           </MainText>
         </Header>
-
-        <Body>
-          <ButtonContainer>
-            <Draggable>
-              <form
-                id='button1'
-                onSubmit={measureClick2}
-                target='_blank'
-                action='https://github.com/joelsrubin'
-              >
-                <GitHub>Github</GitHub>
-              </form>
-            </Draggable>
-
-            <Draggable>
-              <form
-                id='button2'
-                target='_blank'
-                action='https://www.linkedin.com/in/joel-rubin-0529'
-                onSubmit={measureClick2}
-              >
-                <LinkedIn>LinkedIn</LinkedIn>
-              </form>
-            </Draggable>
-          </ButtonContainer>
-        </Body>
-      </>
+        <ButtonContainer>
+          <Draggable>
+            <form
+              id='button1'
+              onSubmit={measureClick2}
+              target='_blank'
+              action='https://github.com/joelsrubin'
+            >
+              <GitHub>Github</GitHub>
+            </form>
+          </Draggable>
+          <Draggable>
+            <form
+              id='button2'
+              target='_blank'
+              action='https://www.linkedin.com/in/joel-rubin-0529'
+              onSubmit={measureClick2}
+            >
+              <LinkedIn>LinkedIn</LinkedIn>
+            </form>
+          </Draggable>
+        </ButtonContainer>
+      </Body>
     </ThemeProvider>
   );
 }
@@ -140,7 +136,7 @@ to {
 `;
 
 const Body = styled.div`
-  /* height: 100vh; */
+  height: 400px;
 `;
 
 const LinkedIn = styled.button`

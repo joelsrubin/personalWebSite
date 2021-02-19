@@ -9,15 +9,18 @@ to {
 }
 `
 export const GlobalStyles = createGlobalStyle`
+html {
+  height:100%;
+}
 body{
   background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
     position: relative;
-    transition: all 0.50s linear;
-
-    overflow-x: hidden;
-    overflow-y: hidden;
+    /* transition:  0.20s linear; */
+    height: 50%;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
     /* The switch - the box around the slider */
 .switch {
   position: relative;
