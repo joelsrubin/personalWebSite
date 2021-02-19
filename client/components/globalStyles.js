@@ -19,8 +19,8 @@ body{
     position: relative;
     /* transition:  0.20s linear; */
     height: 50%;
-    /* overflow-x: hidden;
-    overflow-y: hidden; */
+    overflow-x: hidden;
+    overflow-y: hidden;
     /* The switch - the box around the slider */
 .switch {
   position: relative;
