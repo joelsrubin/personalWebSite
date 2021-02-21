@@ -91,6 +91,17 @@ export default function App() {
             </form>
           </Draggable>
         </ButtonContainer>
+        <MiniContainer>
+          <form target='_blank' action='https://github.com/joelsrubin'>
+            <MiniGitHub className='mini'>Github</MiniGitHub>
+          </form>
+          <form
+            target='_blank'
+            action='https://www.linkedin.com/in/joel-rubin-0529'
+          >
+            <MiniLinked className='mini'>LinkedIn</MiniLinked>
+          </form>
+        </MiniContainer>
       </Body>
     </ThemeProvider>
   );
@@ -198,15 +209,66 @@ const GitHub = styled.button`
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 20vh;
   width: 50%;
   display: flex;
   justify-content: space-between;
   @media only screen and (max-device-width: 480px) {
-    display: flex;
-    flex-direction: column;
+    display: none;
+  }
+`;
 
-    justify-content: space-around;
+const MiniContainer = styled.div`
+  display: none;
+  @media only screen and (max-device-width: 480px) {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+const MiniGitHub = styled.button`
+  border-radius: 30px;
+  font-size: 30px;
+  height: 400px;
+  width: 400px;
+  position: absolute;
+  z-index: 9;
+  border: none;
+  box-shadow: 10px 5px 5px ${({ theme }) => theme.shadow};
+  outline: none;
+  background-color: ${({ theme }) => theme.button1};
+  cursor: pointer;
+  color: ${({ theme }) => theme.buttonText};
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  transition: all 0.2s linear;
+  :active {
+    background-color: ${({ theme }) => theme.button1Active};
+  }
+`;
+
+const MiniLinked = styled.button`
+  border-radius: 30px;
+  height: 400px;
+  width: 400px;
+  position: absolute;
+  z-index: 9;
+  box-shadow: 10px 5px 5px ${({ theme }) => theme.shadow};
+  outline: none;
+  border: none;
+  background-color: ${({ theme }) => theme.button2};
+  cursor: pointer;
+
+  transition: all 0.2s linear;
+
+  color: ${({ theme }) => theme.buttonText};
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-size: 30px;
+
+  :active {
+    background-color: ${({ theme }) => theme.button2Active};
   }
 `;
 
