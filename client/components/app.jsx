@@ -1,16 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import Draggable from 'react-draggable';
 import styled, { ThemeProvider, keyframes } from 'styled-components';
 import { GlobalStyles } from './globalStyles.js';
 import { lightTheme, darkTheme } from './Themes.js';
 
+const max = 0.0075; // max speed
+const acc = 0.0002; // accelleration
+const acc2 = 0.0002; // accelleration2
+
 export default function App() {
   const [theme, setTheme] = useState('light');
   const [clicked, setClicked] = useState(false);
+  const [tatin, setTatin] = useState(false);
+  const [tatin2, setTatin2] = useState(false);
+  const [selectedRef, setSelectedRef] = useState(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position2, setPosition2] = useState({ x: 0, y: 0 });
+
   const themeToggler = () => {
     theme === 'light' ? setTheme('dark') : setTheme('light');
   };
+  const ref = useRef();
+  const ref2 = useRef();
+  const timeout = useRef();
+  const timeout2 = useRef();
+  const r = useRef(0); // rotation
+  const dir = useRef("increase"); // increase or decrease
+  const r2 = useRef(0); // rotation
+  const dir2 = useRef("increase"); // increase or decrease
+
+  useEffect(() => {
+    localStorage.getItem('position') && setPosition(JSON.parse(localStorage.getItem('position')));
+    localStorage.getItem('position2') && setPosition2(JSON.parse(localStorage.getItem('position2')));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('position', JSON.stringify(position));
+    localStorage.setItem('position2', JSON.stringify(position2));
+  }, [position, position2]);
+
+
+  useEffect(() => {
+    if (tatin) {
+      let c = true; // continue
+      let i = 0.0005; // accel
+      function rotate() {
+        if (dir.current === "increase" && i < max) i += acc;
+        if (dir.current === "decrease" && i > 0) i -= acc;
+        r.current += i;
+        ref.current.style.transform = `rotate(${r.current}turn)`;
+        if (c) requestAnimationFrame(rotate);
+      }
+      rotate();
+      return () => {
+        c = false;
+      };
+    }
+  }, [tatin]);
+
+  useEffect(() => {
+    if (tatin2) {
+      let c = true; // continue
+      let i = 0.0005; // accel
+      function rotate() {
+        if (dir2.current === "increase" && i < max) i += acc2;
+        if (dir2.current === "decrease" && i > 0) i -= acc2;
+        r2.current += i;
+        ref2.current.style.transform = `rotate(${r2.current}turn)`;
+        if (c) requestAnimationFrame(rotate);
+      }
+      rotate();
+      return () => {
+        c = false;
+      };
+    }
+  }, [tatin2]);
 
   let start2,
     end2,
@@ -70,24 +135,52 @@ export default function App() {
           </MainText>
         </Header>
         <ButtonContainer>
-          <Draggable>
+          <Draggable
+            position={{ x: position.x, y: position.y }}
+            onStop={(e, data) => {
+              setPosition({ x: data.x, y: data.y });
+            }}>
             <form
               id='button1'
               onSubmit={measureClick2}
               target='_blank'
               action='https://github.com/joelsrubin'
             >
-              <GitHub>Github</GitHub>
+              <GitHub ref={ref} onMouseEnter={() => {
+                timeout.current && clearTimeout(timeout.current);
+                dir.current = "increase";
+                setTatin(true);
+              }}
+                onMouseOut={() => {
+                  dir.current = "decrease";
+                  timeout.current = setTimeout(() => {
+                    setTatin(false);
+                  }, 1000);
+                }}>Github</GitHub>
             </form>
           </Draggable>
-          <Draggable>
+          <Draggable
+            position={{ x: position2.x, y: position2.y }}
+            onStop={(e, data) => {
+              setPosition2({ x: data.x, y: data.y });
+            }}>
             <form
               id='button2'
               target='_blank'
               action='https://www.linkedin.com/in/joel-rubin-0529'
               onSubmit={measureClick2}
             >
-              <LinkedIn>LinkedIn</LinkedIn>
+              <LinkedIn ref={ref2} onMouseEnter={() => {
+                timeout2.current && clearTimeout(timeout2.current);
+                dir2.current = "increase";
+                setTatin2(true);
+              }}
+                onMouseOut={() => {
+                  dir2.current = "decrease";
+                  timeout2.current = setTimeout(() => {
+                    setTatin2(false);
+                  }, 1000);
+                }}>LinkedIn</LinkedIn>
             </form>
           </Draggable>
         </ButtonContainer>
@@ -127,24 +220,9 @@ const MainText = styled.h2`
   }
 `;
 
-const rotate = keyframes`
-from {
-  transform: rotate(0deg);
-}
-to {
-  transform: rotate(360deg);
-}
-`;
 
-const antiRotate = keyframes`
-from {
-  transform: rotate(360deg);
-}
 
-to {
-  transform: rotate(0deg);
-}
-`;
+
 
 const Body = styled.div`
   height: 400px;
@@ -161,9 +239,6 @@ const LinkedIn = styled.button`
   border: none;
   background-color: ${({ theme }) => theme.button2};
   cursor: pointer;
-  animation: ${rotate} 10s linear infinite;
-  transition: all 0.2s linear;
-  animation-play-state: paused;
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -171,12 +246,10 @@ const LinkedIn = styled.button`
 
   :active {
     background-color: ${({ theme }) => theme.button2Active};
-    animation-play-state: paused;
   }
 
   :hover {
     cursor: move;
-    animation-play-state: running;
   }
 `;
 
@@ -192,8 +265,6 @@ const GitHub = styled.button`
   outline: none;
   background-color: ${({ theme }) => theme.button1};
   cursor: pointer;
-  animation: ${antiRotate} 10s linear infinite;
-  animation-play-state: paused;
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -204,7 +275,6 @@ const GitHub = styled.button`
 
   :hover {
     cursor: move;
-    animation-play-state: running;
   }
 `;
 
@@ -280,5 +350,5 @@ const Toggle = styled.button`
   font-size:0.8rem;
   padding: 0.6rem;
   outline: none;
-  }
+
 `;

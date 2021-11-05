@@ -1,12 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT;
+const PORT = 3000;
 
 
-app.use(express.static('dist'))
+app.use(express.static('dist'));
 
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`)
-})
+  console.log(`listening on port ${PORT}`);
+});

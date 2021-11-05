@@ -9,8 +9,8 @@ export const lightTheme = {
   button2Active: '#357b35',
   buttonText: '#000000',
   shadow: 'black',
-  invisibleInk: 'cornflowerblue',
-}
+  invisibleInk: '#c6d4df',
+};
 
 export const darkTheme = {
   body: '#363537',
@@ -24,4 +24,4 @@ export const darkTheme = {
   buttonText: '#000000',
   shadow: '#FAFAFA',
   invisibleInk: '#FAFAFA',
-}
+};

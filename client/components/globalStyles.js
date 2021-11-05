@@ -1,4 +1,4 @@
-import { createGlobalStyle, keyframes } from 'styled-components'
+import { createGlobalStyle, keyframes } from 'styled-components';
 const fade = keyframes`
 from {
   opacity: 1;
@@ -7,10 +7,10 @@ from {
 to {
   opacity: 0;
 }
-`
+`;
 export const GlobalStyles = createGlobalStyle`
 html {
-  height:100%;
+  height:100vh
 }
 body{
   background: ${({ theme }) => theme.body};
@@ -18,7 +18,7 @@ body{
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
     position: relative;
     /* transition:  0.20s linear; */
-    height: 50%;
+    height: 100vh;
     overflow-x: hidden;
     overflow-y: hidden;
     /* The switch - the box around the slider */
@@ -103,4 +103,4 @@ input:checked + .slider:before {
   visibility: visible;
   animation: ${fade} 1s linear forwards;
 }
-`
+`;
