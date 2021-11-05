@@ -11,6 +11,7 @@ const acc2 = 0.0002; // accelleration2
 
 export default function App() {
   const [theme, setTheme] = useState('light');
+  const [dragging, setDragging] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [tatin, setTatin] = useState(false);
   const [tatin2, setTatin2] = useState(false);
@@ -81,19 +82,8 @@ export default function App() {
     end2,
     delta2 = 0.6;
 
-  const measureClick2 = (e) => {
-    let button2 = document.getElementById(e.target.id);
-    button2.addEventListener('mousedown', () => {
-      start2 = new Date();
-    });
-    button2.addEventListener('mouseup', () => {
-      end2 = new Date();
-      delta2 = (end2 - start2) / 1000.0;
-    });
-    if (delta2 > 0.2) {
-      e.preventDefault();
-    }
-  };
+
+
 
   const copyHandler = (e) => {
     let copyText = document.getElementById('email');
@@ -112,6 +102,9 @@ export default function App() {
       }
     );
   };
+
+  console.log('draggin1: ', dragging);
+  console.log('draggin2: ', dragging2);
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
@@ -136,13 +129,17 @@ export default function App() {
         </Header>
         <ButtonContainer>
           <Draggable
+            onDrag={() => {
+              setDragging(true);
+            }}
             position={{ x: position.x, y: position.y }}
             onStop={(e, data) => {
+              setTimeout(() => { setDragging(false); }, 1000);
               setPosition({ x: data.x, y: data.y });
             }}>
             <form
               id='button1'
-              onSubmit={measureClick2}
+              onSubmit={(e) => { if (dragging) e.preventDefault(); }}
               target='_blank'
               action='https://github.com/joelsrubin'
             >
@@ -161,14 +158,22 @@ export default function App() {
           </Draggable>
           <Draggable
             position={{ x: position2.x, y: position2.y }}
+            onDrag={() => {
+              setDragging(true);
+            }}
             onStop={(e, data) => {
+              setTimeout(() => { setDragging(false); }, 1000);
               setPosition2({ x: data.x, y: data.y });
             }}>
             <form
               id='button2'
               target='_blank'
               action='https://www.linkedin.com/in/joel-rubin-0529'
-              onSubmit={measureClick2}
+              onSubmit={(e) => {
+                if (dragging) {
+                  e.preventDefault();
+                }
+              }}
             >
               <LinkedIn ref={ref2} onMouseEnter={() => {
                 timeout2.current && clearTimeout(timeout2.current);
@@ -198,7 +203,7 @@ export default function App() {
       </Body>
     </ThemeProvider>
   );
-}
+};
 
 const Header = styled.div`
   text-align: center;
@@ -239,6 +244,9 @@ const LinkedIn = styled.button`
   border: none;
   background-color: ${({ theme }) => theme.button2};
   cursor: pointer;
+  ${'' /* animation: ${rotate} 10s linear infinite;
+  transition: all 0.2s linear;
+  animation-play-state: paused; */}
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -246,10 +254,12 @@ const LinkedIn = styled.button`
 
   :active {
     background-color: ${({ theme }) => theme.button2Active};
+    ${'' /* animation-play-state: paused; */}
   }
 
   :hover {
     cursor: move;
+    ${'' /* animation-play-state: running; */}
   }
 `;
 
@@ -265,6 +275,8 @@ const GitHub = styled.button`
   outline: none;
   background-color: ${({ theme }) => theme.button1};
   cursor: pointer;
+  ${'' /* animation: ${antiRotate} 10s linear infinite;
+  animation-play-state: paused; */}
   color: ${({ theme }) => theme.buttonText};
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -275,6 +287,7 @@ const GitHub = styled.button`
 
   :hover {
     cursor: move;
+    ${'' /* animation-play-state: running; */}
   }
 `;
 
@@ -350,5 +363,4 @@ const Toggle = styled.button`
   font-size:0.8rem;
   padding: 0.6rem;
   outline: none;
-
 `;
