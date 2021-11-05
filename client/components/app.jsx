@@ -131,7 +131,7 @@ export default function App() {
             }}
             position={{ x: position.x, y: position.y }}
             onStop={(e, data) => {
-              setTimeout(() => { setDragging(false); }, 1000);
+              setTimeout(() => { setDragging(false); }, 10);
               setPosition({ x: data.x, y: data.y });
             }}>
             <form
@@ -159,7 +159,7 @@ export default function App() {
               setDragging(true);
             }}
             onStop={(e, data) => {
-              setTimeout(() => { setDragging(false); }, 1000);
+              setTimeout(() => { setDragging(false); }, 10);
               setPosition2({ x: data.x, y: data.y });
             }}>
             <form
