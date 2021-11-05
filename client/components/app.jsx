@@ -103,9 +103,6 @@ export default function App() {
     );
   };
 
-  console.log('draggin1: ', dragging);
-  console.log('draggin2: ', dragging2);
-
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyles />
