@@ -4,6 +4,7 @@ import Draggable from 'react-draggable';
 import styled, { ThemeProvider, keyframes } from 'styled-components';
 import { GlobalStyles } from './globalStyles.js';
 import { lightTheme, darkTheme } from './Themes.js';
+import { isMobile } from 'react-device-detect';
 
 const max = 0.0075; // max speed
 const acc = 0.0002; // accelleration
@@ -18,6 +19,8 @@ export default function App() {
   const [selectedRef, setSelectedRef] = useState(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [position2, setPosition2] = useState({ x: 0, y: 0 });
+
+
 
   const themeToggler = () => {
     theme === 'light' ? setTheme('dark') : setTheme('light');
@@ -94,7 +97,7 @@ export default function App() {
     ];
     navigator.clipboard.write(data).then(
       () => {
-        setClicked(!clicked);
+        setClicked(true);
         console.log(`copied ${copyText.innerText} to clipBoard`);
       },
       () => {
@@ -107,10 +110,12 @@ export default function App() {
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <GlobalStyles />
       <Body>
-        <label className='switch'>
-          <input onClick={themeToggler} type='checkbox' />
-          <span className='slider round'></span>
-        </label>
+        {!isMobile && (
+          <label className='switch'>
+            <input onClick={themeToggler} type='checkbox' />
+            <span className='slider round'></span>
+          </label>
+        )}
         <Header>
           <h1>Joel Rubin</h1>
           <MainText>
@@ -119,10 +124,12 @@ export default function App() {
               joelsrubin@gmail.com
             </span>
             <br></br>
+
             <span className={clicked ? 'display' : 'hidden'}>
               copied to clipboard!
             </span>
           </MainText>
+
         </Header>
         <ButtonContainer>
           <Draggable
